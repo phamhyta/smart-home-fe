@@ -1,23 +1,35 @@
 import logo from '../../assets/logo.png'
-import { Form, InputGroup, Tabs, Tab } from 'react-bootstrap';
+import { Form, InputGroup, Tabs, Tab, Table } from 'react-bootstrap';
 import './style.scss'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import BaseLayout from '../../general/layout';
+import AppButton from '../../general/components/appButton';
+import { useState } from 'react';
+import ModalCreateRoom from './modalCreateRoom';
+import ModalDeleteConfirm from '../../general/components/modalDeleteConfirm';
 
 function Rooms () {
-    return (
-        <div className='homepage devices-screen d-flex'>
-            <div className='nav-bar me-5 mt-8 text-center h-100'>
-                <img className='my-2' src={logo} width={120} />
-                <div className='text-start'>
-                    <div className='navbar-item'>Dashboard</div>
-                    <div className='navbar-item'>Devices</div>
-                    <div className='navbar-item' style={{background: '#f7f7f9', color: '#566d7f'}}>Rooms</div>
-                    <div className='navbar-item'>Statistics</div>
-                    <div className='navbar-item'>Settings</div>
-                </div>
-            </div>
+    const [showModalCreateRoom, setShowModalCreateRoom] = useState(false)
 
-            <div className='content w-75'>
+    const rooms = [
+        {
+            name: "Kitchen",
+            totalDevices: 3
+        },
+        {
+            name: "Bedroom 1",
+            totalDevices: 3
+        },
+        {
+            name: "Kitchen",
+            totalDevices: 3
+        },
+    ]
+
+    const [showModalDeleteRoom, setShowModalDeleteRoom] = useState(false)
+    return (
+        <BaseLayout selected='rooms'>
+            <div className='dashboard devices-screen'>
                 <div className='d-flex mb-1'>
                     <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
@@ -26,55 +38,60 @@ function Rooms () {
                     <p className='date-today w-50 text-end'>Monday, January 9th 2023</p>
         
                 </div>
-                <Tabs
-                    defaultActiveKey="living"
-                    id="uncontrolled-tab-example"
-                    className="mb-3"
-                >
-                    <Tab eventKey="living" title="Living Room">
-                        {/* <Sonnet /> */}
-                    </Tab>
-                    <Tab eventKey="bedroom" title="Bedroom">
-                        {/* <Sonnet /> */}
-                    </Tab>
-                    <Tab eventKey="kitchen" title="Kitchen">
-                        {/* <Sonnet /> */}
-                    </Tab>
-                </Tabs>
-                <div className='d-flex'>
-                    <div className='me-5 w-50'>
-                        <div className='part'>
-                            <i class="fas fa-temperature-high"></i>
-                            <div className='ms-5 text-center'>
-                                <p className='label'>Temperature</p>
-                                <p className='number'>25 <sup>o</sup>C</p>
-                            </div>
-                        </div>
-                        <div className='part'>
-                            <i class="fas fa-temperature-high"></i>
-                            <div className='ms-5 text-center'>
-                                <p className='label'>Humidity</p>
-                                <p className='number'>30 <span style={{fontSize: 20}}>%</span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='ml-5 w-50 d-block light-intensity part text-center'>
-                        <p>Light Intensity</p>
-                        <CircularProgressbar 
-                            className='w-50'
-                            strokeWidth={14}
-                            value={75} 
-                            text={`75 %`} 
-                            styles={buildStyles({
-                                pathColor: '#566d7f',
-                                trailColor: "#eee",
-                                strokeLinecap: 'butt'
-                            })}
-                        />
-                    </div>
-                </div>                
+
+                <AppButton
+                    text='Add Room'
+                    beforeIcon={<i class="fas fa-plus me-2"></i>}
+                    className='btn-viewall d-flex'
+                    onClick={() => setShowModalCreateRoom(true)}
+                />    
+
+                <Table striped hover className="mt-4 text-center">
+                    <thead className="text-center">
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Total Devices</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                        
+                    <tbody>
+                        {rooms?.map((item, index) => (
+                            <tr>  
+                                <td>{index+1}</td>  
+                                <td className="text-start">{item?.name} </td>
+                                <td>{item?.totalDevices}</td>
+                                <td className="text-center">
+                                    <i className="fas fa-pencil-alt" onClick={(e) => {
+                                        e.preventDefault()
+                                        // handleEditRoom(item)
+                                    }}></i>
+                                    <i className="fas fa-trash-alt ms-3" onClick={() => {
+                                        // setDeleteRoom(item)
+                                        setShowModalDeleteRoom(true)
+                                    }}></i>
+                                </td>
+                            </tr>
+                        ))}
+
+                        
+                    </tbody>
+                </Table>   
             </div>
-        </div>
+
+        <ModalCreateRoom
+            show={showModalCreateRoom}
+            onHide={() => setShowModalCreateRoom(false)}
+        />
+
+        <ModalDeleteConfirm
+            show={showModalDeleteRoom}
+            onHide={() => {setShowModalDeleteRoom(false)}}
+            title="Bạn có chắc chắn muốn xóa phòng này?"
+            // handleDeleteSubmit={handleDeleteRoom}
+        />
+        </BaseLayout>
     )
 }
 

@@ -1,0 +1,25 @@
+.modal-delete-confirm {
+    .modal-title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .modal-content.bg-light {
+        align-items: center;
+        border-radius: 0px;
+        padding: 40px 0px;
+    }
+    .fas {
+        font-size: 90px;
+        color: #da2745;
+    }
+
+    .btn-del {
+        width: 48%;
+        border: 0 none;
+        background: #da2745;
+    }
+    .btn-light {
+        width: 48%;
+    }
+}

@@ -1,80 +1,134 @@
 import logo from '../../assets/logo.png'
-import { Form, InputGroup, Tabs, Tab } from 'react-bootstrap';
+import { Form, InputGroup, Tabs, Tab, Table, Row, Col } from 'react-bootstrap';
 import './style.scss'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import BaseLayout from '../../general/layout';
+import { useState } from 'react';
+import AppButton from '../../general/components/appButton';
+import ModalCreateDevice from './modalCreateDevice';
+import ModalDeleteConfirm from '../../general/components/modalDeleteConfirm';
 
 function Devices () {
-    return (
-        <div className='homepage devices-screen d-flex'>
-            <div className='nav-bar me-5 mt-8 text-center h-100'>
-                <img className='my-2' src={logo} width={120} />
-                <div className='text-start'>
-                    <div className='navbar-item'>Dashboard</div>
-                    <div className='navbar-item' style={{background: '#f7f7f9', color: '#566d7f'}}>Devices</div>
-                    <div className='navbar-item'>Rooms</div>
-                    <div className='navbar-item'>Statistics</div>
-                    <div className='navbar-item'>Settings</div>
-                </div>
-            </div>
+    const [showModalCreateDevice, setShowModalCreateDevice] = useState(false)
 
-            <div className='content w-75'>
+    const devices = [
+        {
+            name: "Sensor",
+            status: 'on'
+        },
+        {
+            name: "Light",
+            status: "on"
+        },
+        {
+            name: "Fan",
+            status: "on"
+        },
+        {
+            name: "Light 2",
+            status: "off"
+        },
+    ]
+
+    const [showModalDeleteDevice, setShowModalDeleteDevice] = useState(false)
+    return (
+        <BaseLayout selected='devices'>
+            <div className='dashboard devices-screen'>
                 <div className='d-flex mb-1'>
                     <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
                         {/* <i class="fas fa-search"></i> */}
                     </InputGroup>       
                     <p className='date-today w-50 text-end'>Monday, January 9th 2023</p>
-        
                 </div>
-                <Tabs
+                {/* <Tabs
                     defaultActiveKey="living"
                     id="uncontrolled-tab-example"
-                    className="mb-3"
+                    className="mb-3 d-flex flex-row"
                 >
                     <Tab eventKey="living" title="Living Room">
-                        {/* <Sonnet /> */}
                     </Tab>
                     <Tab eventKey="bedroom" title="Bedroom">
-                        {/* <Sonnet /> */}
                     </Tab>
                     <Tab eventKey="kitchen" title="Kitchen">
-                        {/* <Sonnet /> */}
                     </Tab>
-                </Tabs>
-                <div className='d-flex'>
-                    <div className='me-5 w-50'>
-                        <div className='part'>
-                            <i class="fas fa-temperature-high"></i>
-                            <div className='ms-5 text-center'>
-                                <p className='label'>Temperature</p>
-                                <p className='number'>25 <sup>o</sup>C</p>
-                            </div>
-                        </div>
-                        <div className='part'>
-                            <i class="fas fa-temperature-high"></i>
-                            <div className='ms-5 text-center'>
-                                <p className='label'>Humidity</p>
-                                <p className='number'>30 <span style={{fontSize: 20}}>%</span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='ml-5 w-50 d-block light-intensity part text-center'>
-                        <p>Light Intensity</p>
-                        <CircularProgressbar 
-                            className='w-50'
-                            strokeWidth={14}
-                            value={75} 
-                            text={`75 %`} 
-                            styles={buildStyles({
-                                pathColor: '#566d7f',
-                                trailColor: "#eee",
-                                strokeLinecap: 'butt'
-                            })}
-                        />
-                    </div>
-                </div>                
+                </Tabs>           */}
+               
+                <Form.Group as={Row} className='mt-3'>
+                    <Form.Label column sm="2"> Choose Room </Form.Label>
+                    <Col sm="6">
+                        <Form.Select aria-label="Default select example">
+                            <option value="1">Kitchen</option>
+                            <option value="2">Bedroom</option>
+                        </Form.Select>
+                    </Col>
+                </Form.Group>
+                <AppButton
+                    text='Add Device'
+                    beforeIcon={<i class="fas fa-plus me-2"></i>}
+                    className='btn-viewall d-flex mt-3'
+                    onClick={() => setShowModalCreateDevice(true)}
+                />  
+
+                <Table striped hover className="mt-4 text-center">
+                    <thead className="text-center">
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                        
+                    <tbody>
+                        {devices?.map((item, index) => (
+                            <tr>  
+                                <td>{index+1}</td>  
+                                <td className="text-start">{item?.name} </td>
+                                {/* <td>{item?.status}</td> */}
+                                <td>
+                                    {item?.status === 'on' ? (
+                                        <Form.Check 
+                                            type="switch"
+                                            id="disabled-custom-switch"
+                                            defaultChecked={true}
+                                        />
+                                        ) : (
+                                        <Form.Check 
+                                            type="switch"
+                                            id="disabled-custom-switch"
+                                            defaultChecked={false}
+                                        />
+                                    )}
+                                </td>
+                                <td className="text-center">
+                                    <i className="fas fa-pencil-alt" onClick={(e) => {
+                                        e.preventDefault()
+                                        // handleEditRoom(item)
+                                    }}></i>
+                                    <i className="fas fa-trash-alt ms-3" onClick={() => {
+                                        // setDeleteRoom(item)
+                                        setShowModalDeleteDevice(true)
+                                    }}></i>
+                                </td>
+                            </tr>
+                        ))}
+
+                        
+                    </tbody>
+                </Table>  
             </div>
-        </div>
+        <ModalCreateDevice
+            show={showModalCreateDevice}
+            onHide={() => setShowModalCreateDevice(false)}
+        />
+
+        <ModalDeleteConfirm
+            show={showModalDeleteDevice}
+            onHide={() => {setShowModalDeleteDevice (false)}}
+            title="Bạn có chắc chắn muốn xóa thiết bị này?"
+        />
+        </BaseLayout>
     )
 }
 
