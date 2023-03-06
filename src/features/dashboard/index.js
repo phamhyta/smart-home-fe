@@ -23,7 +23,12 @@ function Dashboard () {
         }
     }
 
-
+    useEffect(() => {
+        setTimeout(()=>{
+            getCurrentAnalytic()
+        }, 10000)
+    })
+    
     const getCurrentAnalytic = async () => {
         try {
             const res = await homeApi.getCurrentAnalytic()

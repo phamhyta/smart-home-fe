@@ -20,7 +20,7 @@ function ModalCreateRoom (props) {
                 ...tempData,
                 homeId: homeId
             })
-            toast('Successfully Created new home', {type: toast.TYPE.SUCCESS})
+            toast('Successfully Created new room', {type: toast.TYPE.SUCCESS})
             onHide()
         } catch (err) {
             toast('Error! Try again', {type: toast.TYPE.ERROR})

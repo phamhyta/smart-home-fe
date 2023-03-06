@@ -20,7 +20,7 @@ function ModalUpdateRoom (props) {
                 ...tempData,
                 id: updateRoom?.id
             })
-            toast('Successfully updated home', {type: toast.TYPE.SUCCESS})
+            toast('Successfully updated room', {type: toast.TYPE.SUCCESS})
             onHide()
         } catch (err) {
             toast('Error! Try again', {type: toast.TYPE.ERROR})
