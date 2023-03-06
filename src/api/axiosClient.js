@@ -4,9 +4,9 @@ import axios from "axios";
 const sTag = "[AxiosClient]";
 
 const axiosClient = axios.create({
-  baseURL: "http://172.20.10.12:8080/api/",
+  baseURL: "http://localhost:8080/api/",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
