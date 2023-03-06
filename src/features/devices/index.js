@@ -3,32 +3,63 @@ import { Form, InputGroup, Tabs, Tab, Table, Row, Col } from 'react-bootstrap';
 import './style.scss'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import BaseLayout from '../../general/layout';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppButton from '../../general/components/appButton';
 import ModalCreateDevice from './modalCreateDevice';
 import ModalDeleteConfirm from '../../general/components/modalDeleteConfirm';
+import deviceApi from '../../api/deviceApi';
 
-function Devices () {
+function Devices (props) {
     const [showModalCreateDevice, setShowModalCreateDevice] = useState(false)
+    const roomList = JSON.parse(localStorage.getItem('roomList'))
+    const [selectedRoom, setSelectedRoom] = useState(roomList?.[0])
+    // const devices = [
+    //     {
+    //         name: "Sensor",
+    //         status: 'on'
+    //     },
+    //     {
+    //         name: "Light",
+    //         status: "on"
+    //     },
+    //     {
+    //         name: "Fan",
+    //         status: "on"
+    //     },
+    //     {
+    //         name: "Light 2",
+    //         status: "off"
+    //     },
+    // ]
+    const [devices, setDevices] = useState([])
+    const getDeviceList = async () => {
+        try {
+            const res = await deviceApi.getDeviceList({
+                roomId: selectedRoom?.id
+            })
 
-    const devices = [
-        {
-            name: "Sensor",
-            status: 'on'
-        },
-        {
-            name: "Light",
-            status: "on"
-        },
-        {
-            name: "Fan",
-            status: "on"
-        },
-        {
-            name: "Light 2",
-            status: "off"
-        },
-    ]
+            setDevices(res?.data?.data)
+            console.log(res)
+        } catch (err) {
+
+        }
+    }
+
+    const changeDeviceStatus = async (deviceId) => {
+        try {
+            const res = await deviceApi.toggleStatus(deviceId)
+        } catch (err) {
+
+        }
+    }
+
+    useEffect(() => {
+        getDeviceList()
+    }, [])
+    
+    useEffect(() => {
+        getDeviceList()
+    }, [showModalCreateDevice, selectedRoom])
 
     const [showModalDeleteDevice, setShowModalDeleteDevice] = useState(false)
     return (
@@ -41,25 +72,14 @@ function Devices () {
                     </InputGroup>       
                     <p className='date-today w-50 text-end'>Monday, January 9th 2023</p>
                 </div>
-                {/* <Tabs
-                    defaultActiveKey="living"
-                    id="uncontrolled-tab-example"
-                    className="mb-3 d-flex flex-row"
-                >
-                    <Tab eventKey="living" title="Living Room">
-                    </Tab>
-                    <Tab eventKey="bedroom" title="Bedroom">
-                    </Tab>
-                    <Tab eventKey="kitchen" title="Kitchen">
-                    </Tab>
-                </Tabs>           */}
                
                 <Form.Group as={Row} className='mt-3'>
                     <Form.Label column sm="2"> Choose Room </Form.Label>
                     <Col sm="6">
                         <Form.Select aria-label="Default select example">
-                            <option value="1">Kitchen</option>
-                            <option value="2">Bedroom</option>
+                            {roomList?.map(item => (
+                                <option value={item?.id} onClick={()=> setSelectedRoom(item)}>{item?.name}</option>
+                            ))}
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -85,19 +105,20 @@ function Devices () {
                             <tr>  
                                 <td>{index+1}</td>  
                                 <td className="text-start">{item?.name} </td>
-                                {/* <td>{item?.status}</td> */}
                                 <td>
-                                    {item?.status === 'on' ? (
+                                    {item?.status ? (
                                         <Form.Check 
                                             type="switch"
                                             id="disabled-custom-switch"
                                             defaultChecked={true}
+                                            onChange={() => changeDeviceStatus(item?.id)}
                                         />
                                         ) : (
                                         <Form.Check 
                                             type="switch"
                                             id="disabled-custom-switch"
                                             defaultChecked={false}
+                                            onChange={() => changeDeviceStatus(item?.id)}
                                         />
                                     )}
                                 </td>
@@ -113,14 +134,13 @@ function Devices () {
                                 </td>
                             </tr>
                         ))}
-
-                        
                     </tbody>
                 </Table>  
             </div>
         <ModalCreateDevice
             show={showModalCreateDevice}
             onHide={() => setShowModalCreateDevice(false)}
+            roomId={selectedRoom?.id}
         />
 
         <ModalDeleteConfirm

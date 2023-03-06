@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
+import { toast } from "react-toastify";
+import deviceApi from "../../../api/deviceApi";
 
 function ModalCreateDevice (props) {
-    const {show, onHide} = props
+    const {show, onHide, roomId} = props
     const [tempData, setTempData] = useState({})
 
     const handleChange = (e) => {
@@ -12,8 +14,18 @@ function ModalCreateDevice (props) {
         })
     }
 
-    const handleCreateSubmit = () => {
-
+    const handleCreateSubmit = async () => {
+        try {
+            const res = await deviceApi.createDevice({
+                ...tempData,
+                roomId: roomId
+            })
+            toast('Successfully Created new device', {type: toast.TYPE.SUCCESS})
+            onHide()
+        } catch (err) {
+            toast('Error! Try again', {type: toast.TYPE.ERROR})
+            onHide()
+        }
     }
 
     return(
@@ -29,10 +41,10 @@ function ModalCreateDevice (props) {
                     <Form.Group as={Row}>
                         <Form.Label column sm="3"> Name </Form.Label>
                         <Col sm="9">
-                            <Form.Control type='text' name="name" value={tempData?.name} onChange={(e) => handleChange(e)} />
+                            <Form.Control type='text' name="name" onChange={(e) => handleChange(e)} />
                         </Col>
                     </Form.Group>
-                    <Form.Group as={Row} className="mt-3">
+                    {/* <Form.Group as={Row} className="mt-3">
                         <Form.Label column sm="3"> Description </Form.Label>
                         <Col sm="9">
                             <Form.Control type='text' name="description" value={tempData?.description} onChange={(e) => handleChange(e)} />
@@ -46,7 +58,7 @@ function ModalCreateDevice (props) {
                                 <option value="2">Fan</option>
                             </Form.Select>
                         </Col>
-                    </Form.Group>
+                    </Form.Group> */}
                 </Form>
             </Modal.Body>
 

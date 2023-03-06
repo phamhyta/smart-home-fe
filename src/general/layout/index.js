@@ -11,7 +11,7 @@ function BaseLayout (props) {
         <div className="base-layout d-flex">
             <div className="layout-sidebar d-flex flex-column text-start">
                 <div className="d-flex justify-content-center my-3 pb-3 border-bottom">
-                    <img src={logo} onClick={() => navigate('/')} className='my-2' style={{width: '120px', cursor: 'pointer'}} />
+                    <img src={logo} onClick={() => navigate('/homes')} className='my-2' style={{width: '120px', cursor: 'pointer'}} />
                 </div>
                 <AppButton
                     className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='dashboard' ? 'selected' : ''}`}

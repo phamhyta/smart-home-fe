@@ -4,40 +4,57 @@ import './style.scss'
 import Chart from './chart';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import BaseLayout from '../../general/layout';
+import homeApi from '../../api/homeApi';
+import { useEffect, useState } from 'react';
 function Dashboard () {
     let today = new Date()
+    const currentUser = JSON.parse(localStorage.getItem('currentAccount'))
+    const [analytic, setAnalytic] = useState({})
+
+    const getAnalytic = async () => {
+        try {
+            const res = await homeApi.getAnalytic()
+            console.log(res)
+            setAnalytic(res?.data?.data)
+        } catch (err) {
+
+        }
+    }
+
+    useEffect(() => {
+        getAnalytic()
+    }, [])
+
     return (
         <BaseLayout selected='dashboard'>
         <div className='dashboard d-flex justify-content-between'>
             <div className='content'>
                 <div className='d-flex mb-1'>
-                    <InputGroup className='w-50'>
+                    {/* <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
-                        {/* <i class="fas fa-search"></i> */}
-                    </InputGroup>       
+                    </InputGroup>        */}
                     <p className='date-today w-50 text-end'>Monday, January 9th 2023</p>
-                    {/* <p className='date-today w-50 text-end'>{today}</p> */}
         
                 </div>
 
-                <div className='d-flex'>
-                    <div className='me-5 w-50'>
+                <div className='d-flex justify-content-between'>
+                    {/* <div className='me-5 w-50'> */}
                         <div className='part'>
                             <i class="fas fa-temperature-high"></i>
                             <div className='ms-5 text-center'>
                                 <p className='label'>Temperature</p>
-                                <p className='number'>25 <sup>o</sup>C</p>
+                                <p className='number'>{analytic?.currentTemp} <sup>o</sup>C</p>
                             </div>
                         </div>
                         <div className='part'>
                             <i class="fas fa-temperature-high"></i>
                             <div className='ms-5 text-center'>
                                 <p className='label'>Humidity</p>
-                                <p className='number'>30 <span style={{fontSize: 20}}>%</span></p>
+                                <p className='number'>{analytic?.currentHumid} <span style={{fontSize: 20}}>%</span></p>
                             </div>
                         </div>
-                    </div>
-                    <div className='ml-5 w-50 d-block light-intensity part text-center'>
+                    {/* </div> */}
+                    {/* <div className='ml-5 w-50 d-block light-intensity part text-center'>
                         <p>Light Intensity</p>
                         <CircularProgressbar 
                             className='w-50'
@@ -50,16 +67,16 @@ function Dashboard () {
                                 strokeLinecap: 'butt'
                             })}
                         />
-                    </div>
+                    </div> */}
                 </div>
                 
                 <Chart className='w-100'/>
             </div>
             <div className="my-devices d-flex flex-column p-3 text-center">
                 <img src={avatar} width={120} />
-                <p className='text'>Hi, Quynh Anh!</p>
+                <p className='text'>Hi, {currentUser?.fullname}!</p>
                 <div className='bg-white' style={{borderRadius: "30px"}}>
-                    <div className='d-flex'>
+                    {/* <div className='d-flex'>
                         <div className='device' style={{background: "#ffe0e0"}}>
                             <i class="fas fa-lightbulb"></i>
                             <p>Lights</p>
@@ -79,7 +96,7 @@ function Dashboard () {
                             <p>Wifi</p>
                         </div>
                     </div>
-                    <p className='text fw-light'>Tap to turn on/ off devices</p>
+                    <p className='text fw-light'>Tap to turn on/ off devices</p> */}
                 </div>
             </div>
         </div>

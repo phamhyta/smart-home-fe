@@ -4,29 +4,36 @@ import './style.scss'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import BaseLayout from '../../general/layout';
 import AppButton from '../../general/components/appButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ModalCreateRoom from './modalCreateRoom';
 import ModalDeleteConfirm from '../../general/components/modalDeleteConfirm';
+import roomApi from '../../api/roomApi';
+import { useNavigate } from 'react-router-dom';
 
 function Rooms () {
     const [showModalCreateRoom, setShowModalCreateRoom] = useState(false)
-
-    const rooms = [
-        {
-            name: "Kitchen",
-            totalDevices: 3
-        },
-        {
-            name: "Bedroom 1",
-            totalDevices: 3
-        },
-        {
-            name: "Kitchen",
-            totalDevices: 3
-        },
-    ]
-
+    const navigate = useNavigate()
+    const [rooms, setRooms] = useState([])
     const [showModalDeleteRoom, setShowModalDeleteRoom] = useState(false)
+    const currentHome = JSON.parse(localStorage.getItem('currentHome'))
+    const getRoomList = async () => {
+        try {
+            const res = await roomApi.getRoomList(currentHome?.id)
+            setRooms(res?.data?.data)
+            localStorage.setItem('roomList', JSON.stringify(res?.data?.data))
+        } catch (err) {
+
+        }
+    }
+
+    useEffect(() => {
+        getRoomList()
+    }, [])
+
+    useEffect(() => {
+        getRoomList()
+    }, [showModalCreateRoom])
+
     return (
         <BaseLayout selected='rooms'>
             <div className='dashboard devices-screen'>
@@ -51,7 +58,8 @@ function Rooms () {
                         <tr>
                             <th>No.</th>
                             <th>Name</th>
-                            <th>Total Devices</th>
+                            {/* <th>Total Devices</th> */}
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -61,7 +69,15 @@ function Rooms () {
                             <tr>  
                                 <td>{index+1}</td>  
                                 <td className="text-start">{item?.name} </td>
-                                <td>{item?.totalDevices}</td>
+                                {/* <td>{item?.totalDevices}</td> */}
+                                <td>
+                                    <AppButton
+                                        text='View Detail'
+                                        beforeIcon={<i class="fas fa-plus me-2"></i>}
+                                        className='btn-viewall d-flex'
+                                        onClick={() => navigate('/devices')}
+                                    />
+                                </td>
                                 <td className="text-center">
                                     <i className="fas fa-pencil-alt" onClick={(e) => {
                                         e.preventDefault()
@@ -83,6 +99,7 @@ function Rooms () {
         <ModalCreateRoom
             show={showModalCreateRoom}
             onHide={() => setShowModalCreateRoom(false)}
+            homeId={currentHome?.id}
         />
 
         <ModalDeleteConfirm

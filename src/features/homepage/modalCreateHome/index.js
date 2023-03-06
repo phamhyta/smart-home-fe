@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
+import { toast } from "react-toastify";
+import homeApi from "../../../api/homeApi";
 
 function ModalCreateHome (props) {
-    const {show, onHide} = props
+    const {show, onHide, userId} = props
     const [tempData, setTempData] = useState({})
 
     const handleChange = (e) => {
@@ -12,8 +14,17 @@ function ModalCreateHome (props) {
         })
     }
 
-    const handleCreateSubmit = () => {
-
+    const handleCreateSubmit = async () => {
+        try {
+            const res = await homeApi.createHome(tempData, {
+                userId: userId
+            })
+            toast('Successfully Created new home', {type: toast.TYPE.SUCCESS})
+            onHide()
+        } catch (err) {
+            toast('Error! Try again', {type: toast.TYPE.ERROR})
+            onHide()
+        }
     }
 
     return(
@@ -29,13 +40,13 @@ function ModalCreateHome (props) {
                     <Form.Group as={Row}>
                         <Form.Label column sm="3"> Name </Form.Label>
                         <Col sm="9">
-                            <Form.Control type='text' name="name" value={tempData?.name} onChange={(e) => handleChange(e)} />
+                            <Form.Control type='text' name="name" onChange={(e) => handleChange(e)} />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mt-3">
-                        <Form.Label column sm="3"> Address </Form.Label>
+                        <Form.Label column sm="3"> Location </Form.Label>
                         <Col sm="9">
-                            <Form.Control type='text' name="address" value={tempData?.address} onChange={(e) => handleChange(e)} />
+                            <Form.Control type='text' name="location" onChange={(e) => handleChange(e)} />
                         </Col>
                     </Form.Group>
                 </Form>

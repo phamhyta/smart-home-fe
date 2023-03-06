@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import authApi from '../../../api/authApi';
 import './style.scss'
 
 function Login () {
@@ -10,15 +11,13 @@ function Login () {
     const [tempData, setTempData] = useState({})
     const handleLogin = async () => {
         try {
-            const res = await axios.post('http://localhost:3500/', tempData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            toast('Successfully Logged In!', {type: toast.TYPE.SUCCESS})
-            if (res) console.log(res)
+            const res = await authApi.signIn(tempData)
+            toast(`Hello, ${res?.data?.fullname}`, {type: toast.TYPE.SUCCESS})
+            if (res) console.log(res?.data)
+            localStorage.setItem('currentAccount', JSON.stringify(res?.data))
+            navigate('/homes')
         } catch (err) {
-            // toast("Error! Try again", {type: toast.TYPE.ERROR})
+            toast("Wrong username or password", {type: toast.TYPE.ERROR})
         }
     }
     const handleChange = (e) => {

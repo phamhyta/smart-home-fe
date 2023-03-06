@@ -26,6 +26,10 @@ export const options = {
         title: {
             display: true,
             text: 'Temperature Chart',
+            style: {
+                fontSize:  '40px',
+                fontWeight:  'bold',
+              },
         },
     },
     // scales: {

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
+import { toast } from "react-toastify";
+import roomApi from "../../../api/roomApi";
 
 function ModalCreateRoom (props) {
-    const {show, onHide} = props
+    const {show, onHide, homeId} = props
     const [tempData, setTempData] = useState({})
 
     const handleChange = (e) => {
@@ -12,8 +14,18 @@ function ModalCreateRoom (props) {
         })
     }
 
-    const handleCreateSubmit = () => {
-
+    const handleCreateSubmit = async () => {
+        try {
+            const res = await roomApi.createRoom({
+                ...tempData,
+                homeId: homeId
+            })
+            toast('Successfully Created new home', {type: toast.TYPE.SUCCESS})
+            onHide()
+        } catch (err) {
+            toast('Error! Try again', {type: toast.TYPE.ERROR})
+            onHide()
+        }
     }
 
     return(
@@ -30,12 +42,6 @@ function ModalCreateRoom (props) {
                         <Form.Label column sm="3"> Name </Form.Label>
                         <Col sm="9">
                             <Form.Control type='text' name="name" value={tempData?.name} onChange={(e) => handleChange(e)} />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row} className="mt-3">
-                        <Form.Label column sm="3"> Description </Form.Label>
-                        <Col sm="9">
-                            <Form.Control type='text' name="description" value={tempData?.description} onChange={(e) => handleChange(e)} />
                         </Col>
                     </Form.Group>
                 </Form>
