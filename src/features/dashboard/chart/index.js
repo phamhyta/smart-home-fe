@@ -88,7 +88,7 @@ function Chart() {
       {
         label: "Humidity",
         data: averageData?.map((item) => item?.humid),
-        backgroundColor: "#688397",
+        backgroundColor: "#492",
       },
     ],
   };

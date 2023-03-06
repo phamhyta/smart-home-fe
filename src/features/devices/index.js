@@ -75,7 +75,7 @@ function Devices(props) {
             <Form.Control className="search-bar" placeholder="Search..." />
             {/* <i class="fas fa-search"></i> */}
           </InputGroup>
-          <p className="date-today w-50 text-end">Monday, January 9th 2023</p>
+          <p className="date-today w-50 text-end">Monday, March 6th 2023</p>
         </div>
 
         <Form.Group as={Row} className="mt-3">

@@ -52,7 +52,7 @@ function Dashboard () {
                     {/* <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
                     </InputGroup>        */}
-                    <p className='date-today w-50 text-end'>Monday, January 9th 2023</p>
+                    <p className='date-today w-50 text-end'>Monday, March 6th 2023</p>
         
                 </div>
 
@@ -91,7 +91,7 @@ function Dashboard () {
                 
                 <Chart className='w-100'/>
             </div>
-            <div className="my-devices d-flex flex-column p-3 text-center">
+            <div className="my-devices d-flex flex-column p-3 text-center ">
                 <img src={avatar} width={120} alt="avatar" />
                 <p className='text'>Hi, {currentUser?.fullname}!</p>
                 <div className='bg-white' style={{borderRadius: "30px"}}>
