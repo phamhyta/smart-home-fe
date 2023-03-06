@@ -1,36 +1,43 @@
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-  } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-  
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
+import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import homeApi from "../../../api/homeApi";
+
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
 );
-export const options = {
+
+function Chart() {
+  const [averageData, setAverageData] = useState([]);
+  const [label, setLabel] = useState([]);
+
+  const options = {
     responsive: true,
     plugins: {
-        legend: {
-            position: 'bottom',
+      legend: {
+        position: "bottom",
+      },
+      title: {
+        display: true,
+        text: "Temperature Chart",
+        style: {
+          fontSize: "40px",
+          fontWeight: "bold",
         },
-        title: {
-            display: true,
-            text: 'Temperature Chart',
-            style: {
-                fontSize:  '40px',
-                fontWeight:  'bold',
-              },
-        },
+      },
     },
     // scales: {
     //     xAxes: [{
@@ -38,25 +45,34 @@ export const options = {
     //         maxBarThickness: 2 // number (pixels)
     //     }]
     // }
-};
-const labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-export const data = {
+  };
+  const labels = averageData?.map((item) => item.time.substring(11, 16));
+  const data = {
     labels,
     datasets: [
       {
-        label: 'Temperature',
-        data: [14, 13, 13, 16, 20, 19, 22, 24, 25, 26, 25, 27, 26, 26, 25, 25, 23, 0, 0, 0, 0, 0, 0, 0],
-        backgroundColor: '#688397',
+        label: "Temperature",
+        data: averageData?.map((item) => item?.temp),
+        backgroundColor: "#688397",
       },
-   
     ],
   };
-function Chart() {
-    return(
-        <div>
-            <Bar data={data} options={options} />
-        </div>
-    )
+
+  const getAverage = async () => {
+    try {
+      const res = await homeApi.getAverage();
+      setAverageData(res?.data?.data?.averageData);
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    getAverage();
+  }, []);
+  return (
+    <div>
+      <Bar data={data} options={options} />
+    </div>
+  );
 }
 
 export default Chart;
