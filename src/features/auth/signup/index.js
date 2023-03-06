@@ -50,7 +50,7 @@ function Signup () {
                         <Form.Control type='password' />
                     </Form.Group> */}
                 </Form>
-
+                <p className='text-start'>Already have an account? <Link to='/login'>Login</Link></p>
                 <Button className='btn-login mt-4' onClick={handleSignup}>Signup</Button>
             </div>
             
