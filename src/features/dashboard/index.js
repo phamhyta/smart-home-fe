@@ -10,6 +10,8 @@ function Dashboard () {
     let today = new Date()
     const currentUser = JSON.parse(localStorage.getItem('currentAccount'))
     const [analytic, setAnalytic] = useState({})
+    const [currentAnalytic, setCurrentAnalytic] = useState({})
+
 
     const getAnalytic = async () => {
         try {
@@ -21,8 +23,20 @@ function Dashboard () {
         }
     }
 
+
+    const getCurrentAnalytic = async () => {
+        try {
+            const res = await homeApi.getCurrentAnalytic()
+            console.log(res)
+            setCurrentAnalytic(res?.data?.data)
+        } catch (err) {
+
+        }
+    }
+
     useEffect(() => {
-        getAnalytic()
+        getAnalytic();
+        getCurrentAnalytic()
     }, [])
 
     return (
@@ -43,14 +57,14 @@ function Dashboard () {
                             <i class="fas fa-temperature-high"></i>
                             <div className='ms-5 text-center'>
                                 <p className='label'>Temperature</p>
-                                <p className='number'>{analytic?.currentTemp} <sup>o</sup>C</p>
+                                <p className='number'>{currentAnalytic?.currentTemp} <sup>o</sup>C</p>
                             </div>
                         </div>
                         <div className='part'>
                             <i class="fas fa-temperature-high"></i>
                             <div className='ms-5 text-center'>
                                 <p className='label'>Humidity</p>
-                                <p className='number'>{analytic?.currentHumid} <span style={{fontSize: 20}}>%</span></p>
+                                <p className='number'>{currentAnalytic?.currentHumid} <span style={{fontSize: 20}}>%</span></p>
                             </div>
                         </div>
                     {/* </div> */}
@@ -73,7 +87,7 @@ function Dashboard () {
                 <Chart className='w-100'/>
             </div>
             <div className="my-devices d-flex flex-column p-3 text-center">
-                <img src={avatar} width={120} />
+                <img src={avatar} width={120} alt="avatar" />
                 <p className='text'>Hi, {currentUser?.fullname}!</p>
                 <div className='bg-white' style={{borderRadius: "30px"}}>
                     {/* <div className='d-flex'>

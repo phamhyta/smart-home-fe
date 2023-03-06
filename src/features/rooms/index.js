@@ -9,12 +9,16 @@ import ModalCreateRoom from './modalCreateRoom';
 import ModalDeleteConfirm from '../../general/components/modalDeleteConfirm';
 import roomApi from '../../api/roomApi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import ModalUpdateRoom from './modalUpdateRoom';
 
 function Rooms () {
     const [showModalCreateRoom, setShowModalCreateRoom] = useState(false)
     const navigate = useNavigate()
     const [rooms, setRooms] = useState([])
     const [showModalDeleteRoom, setShowModalDeleteRoom] = useState(false)
+    const [showModalUpdateRoom, setShowModalUpdateRoom] = useState(false)
+    const [selectedRoom, setSelectedRoom] = useState(null)
     const currentHome = JSON.parse(localStorage.getItem('currentHome'))
     const getRoomList = async () => {
         try {
@@ -26,13 +30,24 @@ function Rooms () {
         }
     }
 
+    const handleDeleteRoom = async () => {
+        try {
+            const res  = await roomApi.deleteRoom(selectedRoom?.id)
+            toast(`Successfully deleted room ${selectedRoom?.name}`, {type: toast.TYPE.SUCCESS})
+            setShowModalDeleteRoom(false)
+        } catch (err) {
+            toast('Error! Try again', {type: toast.TYPE.ERROR})
+            setShowModalDeleteRoom(false)
+        }
+    }
+
     useEffect(() => {
         getRoomList()
     }, [])
 
     useEffect(() => {
         getRoomList()
-    }, [showModalCreateRoom])
+    }, [showModalCreateRoom, showModalDeleteRoom, showModalUpdateRoom])
 
     return (
         <BaseLayout selected='rooms'>
@@ -53,7 +68,7 @@ function Rooms () {
                     onClick={() => setShowModalCreateRoom(true)}
                 />    
 
-                <Table striped hover className="mt-4 text-center">
+                <Table bordered striped hover className="mt-4 text-center">
                     <thead className="text-center">
                         <tr>
                             <th>No.</th>
@@ -74,17 +89,19 @@ function Rooms () {
                                     <AppButton
                                         text='View Detail'
                                         beforeIcon={<i class="fas fa-plus me-2"></i>}
-                                        className='btn-viewall d-flex'
+                                        className='btn-viewall d-flex mx-auto'
                                         onClick={() => navigate('/devices')}
                                     />
                                 </td>
                                 <td className="text-center">
                                     <i className="fas fa-pencil-alt" onClick={(e) => {
                                         e.preventDefault()
+                                        setSelectedRoom(item)
+                                        setShowModalUpdateRoom(true)
                                         // handleEditRoom(item)
                                     }}></i>
                                     <i className="fas fa-trash-alt ms-3" onClick={() => {
-                                        // setDeleteRoom(item)
+                                        setSelectedRoom(item)
                                         setShowModalDeleteRoom(true)
                                     }}></i>
                                 </td>
@@ -102,11 +119,17 @@ function Rooms () {
             homeId={currentHome?.id}
         />
 
+        <ModalUpdateRoom
+            show={showModalUpdateRoom}
+            onHide = {() => setShowModalUpdateRoom(false)}
+            updateRoom ={selectedRoom}
+        />
+
         <ModalDeleteConfirm
             show={showModalDeleteRoom}
             onHide={() => {setShowModalDeleteRoom(false)}}
             title="Bạn có chắc chắn muốn xóa phòng này?"
-            // handleDeleteSubmit={handleDeleteRoom}
+            handleDeleteSubmit={handleDeleteRoom}
         />
         </BaseLayout>
     )

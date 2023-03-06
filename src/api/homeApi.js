@@ -14,7 +14,12 @@ const homeApi = {
     getAnalytic: () => {
         const url = `/analytic/`;
         return axiosClient.get(url);
-    }
+    },
+    
+    getCurrentAnalytic: () => {
+        const url = `/analytic/current`;
+        return axiosClient.get(url);
+    },
 }
 
 export default homeApi;
