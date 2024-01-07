@@ -74,7 +74,7 @@ function BaseLayout (props) {
                     <div className="date-today text-end fw-bold align-items-center my-auto">{today.toDateString()}</div>
                     <div className="d-flex align-items-center">
                         <img src={avatar} width={40} alt="avatar" />
-                        <div className='text fw-bold ms-2 my-auto align-items-center'>Hi, {currentUser?.fullname}!</div>
+                        <div className='text fw-bold ms-2 my-auto align-items-center'>{currentUser?.fullname}</div>
                     </div>
                 </div>
                 {props.children}

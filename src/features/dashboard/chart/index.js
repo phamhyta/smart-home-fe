@@ -65,7 +65,7 @@ function Chart() {
       {
         label: "Temperature",
         data: averageData?.map((item) => item?.temp),
-        backgroundColor: "#688397",
+        backgroundColor: "#ce0b0b",
       },
     ],
   };
@@ -76,7 +76,7 @@ function Chart() {
       {
         label: "Humidity",
         data: averageData?.map((item) => item?.humid),
-        backgroundColor: "#492",
+        backgroundColor: "#050e73",
       },
     ],
   };
@@ -92,9 +92,13 @@ function Chart() {
     getAverage();
   }, []);
   return (
-    <div className="flex">
-      <div className=""><Bar data={data} options={options} /></div>
-      <div className=""><Bar  data={data2} options={options2} /></div>
+    <div className="d-flex justify-content-center w-100">
+      <div className="w-50 h-100 me-3">
+        <Bar data={data} options={options} />
+      </div>
+      <div className="w-50 h-100 ms-3">
+        <Bar  data={data2} options={options2} />
+      </div>
     </div>
   );
 }
