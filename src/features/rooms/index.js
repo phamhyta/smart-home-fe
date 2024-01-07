@@ -13,7 +13,6 @@ import { toast } from 'react-toastify';
 import ModalUpdateRoom from './modalUpdateRoom';
 
 function Rooms () {
-    let today = new Date()
     const [showModalCreateRoom, setShowModalCreateRoom] = useState(false)
     const navigate = useNavigate()
     const [rooms, setRooms] = useState([])
@@ -53,21 +52,19 @@ function Rooms () {
     return (
         <BaseLayout selected='rooms'>
             <div className='dashboard devices-screen'>
-                <div className='d-flex mb-1'>
+                <div className='d-flex justify-content-between mb-1'>
                     <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
-                    </InputGroup>       
-                    <p className='date-today w-50 text-end'>{today.toDateString()}</p>
-        
+                    </InputGroup>
+                    <div className='my-auto'>   
+                        <AppButton
+                            text='Add Room'
+                            beforeIcon={<i class="fas fa-plus me-2"></i>}
+                            className='btn-add-home d-flex'
+                            onClick={() => setShowModalCreateRoom(true)}
+                        />
+                    </div> 
                 </div>
-
-                <AppButton
-                    text='Add Room'
-                    beforeIcon={<i class="fas fa-plus me-2"></i>}
-                    className='btn-viewall d-flex'
-                    onClick={() => setShowModalCreateRoom(true)}
-                />    
-
                 <Table bordered striped hover className="mt-4 text-center">
                     <thead className="text-center">
                         <tr>

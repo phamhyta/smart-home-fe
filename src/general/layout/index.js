@@ -2,96 +2,83 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png"
 import AppButton from "../components/appButton";
+import avatar from '../../assets/avatar.png'
 import './style.scss'
 function BaseLayout (props) {
+    let today = new Date()
     const {selected} = props;
     const [selectMenu, setSelectMenu] = useState(selected)
     const navigate = useNavigate()
+    const currentUser = JSON.parse(localStorage.getItem('currentAccount'))
     return (
         <div className="base-layout d-flex">
             <div className="layout-sidebar d-flex flex-column text-start">
                 <div className="d-flex justify-content-center my-3 pb-3 border-bottom">
-                    <img src={logo} onClick={() => navigate('/homes')} className='my-2' style={{width: '120px', cursor: 'pointer'}} alt=""/>
+                    <img src={logo} onClick={() => navigate('/homes')} className='w-100' style={{cursor: 'pointer'}} alt=""/>
                 </div>
-                <AppButton
-                    className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='dashboard' ? 'selected' : ''}`}
-                    text='Dashboard'
-                    beforeIcon={<i class="fas fa-chart-line me-3"></i>}
-                    onClick={() => {
-                        navigate('/dashboard')
-                        setSelectMenu('dashboard')
-                    }}
-                />
-
-                <AppButton
-                    className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='rooms' ? 'selected' : ''}`}
-                    text='Rooms'
-                    beforeIcon={<i class="fas fa-book me-3"></i>}
-                    onClick={() => {
-                        setSelectMenu('rooms')
-                        navigate('/rooms')
-                    }}
-                />
-                
-                <AppButton
-                    className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='devices' ? 'selected' : ''}`}
-                    text='Devices'
-                    beforeIcon={<i class="fas fa-pencil-ruler me-3"></i>}
-                    onClick={() => {
-                        navigate('/devices')
-                        setSelectMenu('devices')
-                    }}
-                />
-
-                {/* <AppButton
-                    className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='statistics' ? 'selected' : ''}`}
-                    text='Statistics'
-                    beforeIcon={<i class="fas fa-book me-3"></i>}
-                    onClick={() => {
-                        setSelectMenu('statistics')
-                        navigate('/statistics')
-                    }}
-                /> */}
-                <AppButton
-                    className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='users' ? 'selected' : ''}`}
-                    text='Users'
-                    beforeIcon={<i class="fas fa-users me-3"></i>}
-                    onClick={() => {
-                        navigate('/users')
-                        setSelectMenu('users')
-                    }}
-                />
+                <div>
+                    <AppButton
+                        className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='dashboard' ? 'selected' : ''}`}
+                        text='Dashboard'
+                        beforeIcon={<i class="fas fa-chart-line me-3"></i>}
+                        onClick={() => {
+                            navigate('/dashboard')
+                            setSelectMenu('dashboard')
+                        }}
+                    />
+                </div>
+                <div>
+                    <AppButton
+                        className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='rooms' ? 'selected' : ''}`}
+                        text='Rooms'
+                        beforeIcon={<i class="fas fa-book me-3"></i>}
+                        onClick={() => {
+                            setSelectMenu('rooms')
+                            navigate('/rooms')
+                        }}
+                    />
+                </div>
+                <div>
+                    <AppButton
+                        className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='devices' ? 'selected' : ''}`}
+                        text='Devices'
+                        beforeIcon={<i class="fas fa-pencil-ruler me-3"></i>}
+                        onClick={() => {
+                            navigate('/devices')
+                            setSelectMenu('devices')
+                        }}
+                    />
+                </div>
+                <div>
+                    <AppButton
+                        className={`d-flex btn-no-bg text-start nav-item ${selectMenu==='users' ? 'selected' : ''}`}
+                        text='Users'
+                        beforeIcon={<i class="fas fa-users me-3"></i>}
+                        onClick={() => {
+                            navigate('/users')
+                            setSelectMenu('users')
+                        }}
+                    />
+                </div>
                 <div className="logout-item">
                     <AppButton
                         className={`d-flex btn-no-bg text-start nav-item`}
                         text='Logout'
                         beforeIcon={<i class="fas fa-sign-out me-3"></i>}
-                        // onClick={handleLogout}
                         onClick={() => navigate('/login')}
                     />
                 </div>
-                
-
             </div>
             <div className="layout-children">
-                {props.children}
-            </div>
-            {/* </div> */}
-            {/* <div className='nav-bar me-5 mt-8 text-center'>
-                <img className='my-2' src={logo} width={120} />
-                <div className='text-start'>
-                    <div className='navbar-item' style={{background: '#f7f7f9', color: '#566d7f'}}>Dashboard</div>
-                    <div className='navbar-item' onClick={() => navigate('/devices')}>Devices</div>
-                    <div className='navbar-item' onClick={() => navigate('/rooms')}>Rooms</div>
-                    <div className='navbar-item'>Statistics</div>
-                    <div className='navbar-item'>Settings</div>
+                <div className="my-devices d-flex justify-content-between px-3 text-center shadow-sm py-3">
+                    <div className="date-today text-end fw-bold align-items-center my-auto">{today.toDateString()}</div>
+                    <div className="d-flex align-items-center">
+                        <img src={avatar} width={40} alt="avatar" />
+                        <div className='text fw-bold ms-2 my-auto align-items-center'>Hi, {currentUser?.fullname}!</div>
+                    </div>
                 </div>
-
-            
-            </div>
-            <div>
                 {props.children}
-            </div> */}
+            </div>
         </div>
     )
 }

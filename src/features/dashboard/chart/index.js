@@ -39,12 +39,6 @@ function Chart() {
         },
       },
     },
-    // scales: {
-    //     xAxes: [{
-    //         barThickness: 2,  // number (pixels) or 'flex'
-    //         maxBarThickness: 2 // number (pixels)
-    //     }]
-    // }
   };
 
   const options2 = {
@@ -62,12 +56,6 @@ function Chart() {
         },
       },
     },
-    // scales: {
-    //     xAxes: [{
-    //         barThickness: 2,  // number (pixels) or 'flex'
-    //         maxBarThickness: 2 // number (pixels)
-    //     }]
-    // }
   };
 
   const labels = averageData?.map((item) => item.time.substring(11, 16));
@@ -104,9 +92,9 @@ function Chart() {
     getAverage();
   }, []);
   return (
-    <div>
-      <Bar data={data} options={options} />
-      <Bar data={data2} options={options2} />
+    <div className="flex">
+      <div className=""><Bar data={data} options={options} /></div>
+      <div className=""><Bar  data={data2} options={options2} /></div>
     </div>
   );
 }

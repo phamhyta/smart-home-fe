@@ -6,10 +6,10 @@ import ModalDeleteConfirm from "../../general/components/modalDeleteConfirm";
 import BaseLayout from "../../general/layout";
 import ModalCreateUser from "./modalCreateUser";
 import { toast } from "react-toastify";
+import "./styles.scss";
 
 
 function Users (props) {
-    let today = new Date()
     const [showModalCreateUser, setShowModalCreateUser] = useState(false)
     const [showModalDeleteUser, setShowModalDeleteUser] = useState(false)
     const currentHome = JSON.parse(localStorage.getItem('currentHome'))
@@ -36,20 +36,19 @@ function Users (props) {
     return (
         <BaseLayout selected='users'>
             <div className="dashboard users-screen devices-screen">
-                <div className='d-flex mb-1'>
+                <div className='d-flex justify-content-between mb-1'>
                     <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
                     </InputGroup>       
-                    <p className='date-today w-50 text-end'>{today.toDateString()}</p>
-        
+                    <div className="my-auto">
+                    <AppButton
+                            text='Add User'
+                            beforeIcon={<i class="fas fa-plus me-2"></i>}
+                            className='btn-add-home d-flex mt-3'
+                            onClick={() => setShowModalCreateUser(true)}
+                        />
+                    </div>
                 </div>
-
-                <AppButton
-                    text='Add User'
-                    beforeIcon={<i class="fas fa-plus me-2"></i>}
-                    className='btn-viewall d-flex mt-3'
-                    onClick={() => setShowModalCreateUser(true)}
-                />
 
                 <Table striped hover className="mt-4 text-center">
                     <thead className="text-center">
