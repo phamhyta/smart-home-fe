@@ -8,30 +8,12 @@ import ModalCreateDevice from "./modalCreateDevice";
 import "./style.scss";
 
 function Devices(props) {
+  let today = new Date()
   const [showModalCreateDevice, setShowModalCreateDevice] = useState(false);
   const roomList = JSON.parse(localStorage.getItem("roomList"));
   const [selectedRoom, setSelectedRoom] = useState(roomList?.[0]);
   const [selectedDeviceId, setSelectedDeviceId] = useState(0);
   const [showModalDeleteDevice, setShowModalDeleteDevice] = useState(false);
-
-  // const devices = [
-  //     {
-  //         name: "Sensor",
-  //         status: 'on'
-  //     },
-  //     {
-  //         name: "Light",
-  //         status: "on"
-  //     },
-  //     {
-  //         name: "Fan",
-  //         status: "on"
-  //     },
-  //     {
-  //         name: "Light 2",
-  //         status: "off"
-  //     },
-  // ]
   const [devices, setDevices] = useState([]);
   const getDeviceList = async () => {
     try {
@@ -75,7 +57,7 @@ function Devices(props) {
             <Form.Control className="search-bar" placeholder="Search..." />
             {/* <i class="fas fa-search"></i> */}
           </InputGroup>
-          <p className="date-today w-50 text-end">Monday, March 6th 2023</p>
+          <p className="date-today w-50 text-end">{today.toDateString()}</p>
         </div>
 
         <Form.Group as={Row} className="mt-3">

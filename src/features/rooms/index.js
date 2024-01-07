@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import ModalUpdateRoom from './modalUpdateRoom';
 
 function Rooms () {
+    let today = new Date()
     const [showModalCreateRoom, setShowModalCreateRoom] = useState(false)
     const navigate = useNavigate()
     const [rooms, setRooms] = useState([])
@@ -55,9 +56,8 @@ function Rooms () {
                 <div className='d-flex mb-1'>
                     <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
-                        {/* <i class="fas fa-search"></i> */}
                     </InputGroup>       
-                    <p className='date-today w-50 text-end'>Monday, March 6th 2023</p>
+                    <p className='date-today w-50 text-end'>{today.toDateString()}</p>
         
                 </div>
 

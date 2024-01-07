@@ -49,44 +49,27 @@ function Dashboard () {
         <div className='dashboard d-flex justify-content-between'>
             <div className='content'>
                 <div className='d-flex mb-1'>
-                    {/* <InputGroup className='w-50'>
-                        <Form.Control className='search-bar' placeholder='Search...' />
-                    </InputGroup>        */}
-                    <p className='date-today w-50 text-end'>Monday, March 6th 2023</p>
+                    <p className='date-today w-50 text-end'>
+                        {today.toDateString()}
+                    </p>
         
                 </div>
 
                 <div className='d-flex justify-content-between'>
-                    {/* <div className='me-5 w-50'> */}
-                        <div className='part'>
-                            <i class="fas fa-temperature-high"></i>
-                            <div className='ms-5 text-center'>
-                                <p className='label'>Temperature</p>
-                                <p className='number'>{currentAnalytic?.currentTemp} <sup>o</sup>C</p>
-                            </div>
+                    <div className='part'>
+                        <i class="fas fa-temperature-high"></i>
+                        <div className='ms-5 text-center'>
+                            <p className='label'>Temperature</p>
+                            <p className='number'>{currentAnalytic?.currentTemp} <sup>o</sup>C</p>
                         </div>
-                        <div className='part'>
-                            <i class="fas fa-temperature-high"></i>
-                            <div className='ms-5 text-center'>
-                                <p className='label'>Humidity</p>
-                                <p className='number'>{currentAnalytic?.currentHumid} <span style={{fontSize: 20}}>%</span></p>
-                            </div>
+                    </div>
+                    <div className='part'>
+                        <i class="fas fa-temperature-high"></i>
+                        <div className='ms-5 text-center'>
+                            <p className='label'>Humidity</p>
+                            <p className='number'>{currentAnalytic?.currentHumid} <span style={{fontSize: 20}}>%</span></p>
                         </div>
-                    {/* </div> */}
-                    {/* <div className='ml-5 w-50 d-block light-intensity part text-center'>
-                        <p>Light Intensity</p>
-                        <CircularProgressbar 
-                            className='w-50'
-                            strokeWidth={14}
-                            value={75} 
-                            text={`75 %`} 
-                            styles={buildStyles({
-                                pathColor: '#566d7f',
-                                trailColor: "#eee",
-                                strokeLinecap: 'butt'
-                            })}
-                        />
-                    </div> */}
+                    </div>
                 </div>
                 
                 <Chart className='w-100'/>
@@ -95,7 +78,7 @@ function Dashboard () {
                 <img src={avatar} width={120} alt="avatar" />
                 <p className='text'>Hi, {currentUser?.fullname}!</p>
                 <div className='bg-white' style={{borderRadius: "30px"}}>
-                    {/* <div className='d-flex'>
+                    <div className='d-flex'>
                         <div className='device' style={{background: "#ffe0e0"}}>
                             <i class="fas fa-lightbulb"></i>
                             <p>Lights</p>
@@ -115,7 +98,6 @@ function Dashboard () {
                             <p>Wifi</p>
                         </div>
                     </div>
-                    <p className='text fw-light'>Tap to turn on/ off devices</p> */}
                 </div>
             </div>
         </div>

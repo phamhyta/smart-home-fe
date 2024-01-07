@@ -9,24 +9,10 @@ import { toast } from "react-toastify";
 
 
 function Users (props) {
+    let today = new Date()
     const [showModalCreateUser, setShowModalCreateUser] = useState(false)
     const [showModalDeleteUser, setShowModalDeleteUser] = useState(false)
     const currentHome = JSON.parse(localStorage.getItem('currentHome'))
-
-    // const users = [
-    //     {
-    //         name: "Quynh Anh",
-    //         email: "qa@gmail.com"
-    //     },
-    //     {
-    //         name: "Quynh Anh",
-    //         email: "qa@gmail.com"
-    //     },
-    //     {
-    //         name: "Quynh Anh",
-    //         email: "qa@gmail.com"
-    //     },
-    // ]
 
     const [users, setUsers] = useState([])
     const getUserList = async () => {
@@ -53,9 +39,8 @@ function Users (props) {
                 <div className='d-flex mb-1'>
                     <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
-                        {/* <i class="fas fa-search"></i> */}
                     </InputGroup>       
-                    <p className='date-today w-50 text-end'>Monday, March 6th 2023</p>
+                    <p className='date-today w-50 text-end'>{today.toDateString()}</p>
         
                 </div>
 
