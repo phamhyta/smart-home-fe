@@ -52,22 +52,19 @@ function Rooms () {
     return (
         <BaseLayout selected='rooms'>
             <div className='dashboard devices-screen'>
-                <div className='d-flex mb-1'>
+                <div className='d-flex justify-content-between mb-1'>
                     <InputGroup className='w-50'>
                         <Form.Control className='search-bar' placeholder='Search...' />
-                        {/* <i class="fas fa-search"></i> */}
-                    </InputGroup>       
-                    <p className='date-today w-50 text-end'>Monday, March 6th 2023</p>
-        
+                    </InputGroup>
+                    <div className='my-auto'>   
+                        <AppButton
+                            text='Add Room'
+                            beforeIcon={<i class="fas fa-plus me-2"></i>}
+                            className='btn-add-home d-flex'
+                            onClick={() => setShowModalCreateRoom(true)}
+                        />
+                    </div> 
                 </div>
-
-                <AppButton
-                    text='Add Room'
-                    beforeIcon={<i class="fas fa-plus me-2"></i>}
-                    className='btn-viewall d-flex'
-                    onClick={() => setShowModalCreateRoom(true)}
-                />    
-
                 <Table bordered striped hover className="mt-4 text-center">
                     <thead className="text-center">
                         <tr>

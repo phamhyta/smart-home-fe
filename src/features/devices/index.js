@@ -13,25 +13,6 @@ function Devices(props) {
   const [selectedRoom, setSelectedRoom] = useState(roomList?.[0]);
   const [selectedDeviceId, setSelectedDeviceId] = useState(0);
   const [showModalDeleteDevice, setShowModalDeleteDevice] = useState(false);
-
-  // const devices = [
-  //     {
-  //         name: "Sensor",
-  //         status: 'on'
-  //     },
-  //     {
-  //         name: "Light",
-  //         status: "on"
-  //     },
-  //     {
-  //         name: "Fan",
-  //         status: "on"
-  //     },
-  //     {
-  //         name: "Light 2",
-  //         status: "off"
-  //     },
-  // ]
   const [devices, setDevices] = useState([]);
   const getDeviceList = async () => {
     try {
@@ -70,35 +51,38 @@ function Devices(props) {
   return (
     <BaseLayout selected="devices">
       <div className="dashboard devices-screen">
-        <div className="d-flex mb-1">
+        <div className="d-flex mb-1 ">
           <InputGroup className="w-50">
             <Form.Control className="search-bar" placeholder="Search..." />
-            {/* <i class="fas fa-search"></i> */}
           </InputGroup>
-          <p className="date-today w-50 text-end">Monday, March 6th 2023</p>
         </div>
-
-        <Form.Group as={Row} className="mt-3">
-          <Form.Label column sm="2">
-            {" "}
-            Choose Room{" "}
-          </Form.Label>
-          <Col sm="6">
-            <Form.Select aria-label="Default select example">
-              {roomList?.map((item) => (
-                <option value={item?.id} onClick={() => setSelectedRoom(item)}>
-                  {item?.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-        </Form.Group>
-        <AppButton
-          text="Add Device"
-          beforeIcon={<i class="fas fa-plus me-2"></i>}
-          className="btn-viewall d-flex mt-3"
-          onClick={() => setShowModalCreateDevice(true)}
-        />
+        <div className="flex justify-content-between">
+          <div>
+            <Form.Group as={Row} className="mt-3">
+              <Form.Label column sm="2">
+                {" "}
+                Choose Room{" "}
+              </Form.Label>
+              <Col sm="6">
+                <Form.Select aria-label="Default select example">
+                  {roomList?.map((item) => (
+                    <option value={item?.id} onClick={() => setSelectedRoom(item)}>
+                      {item?.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Form.Group>
+          </div>
+          <div>
+            <AppButton
+              text="Add Device"
+              beforeIcon={<i class="fas fa-plus me-2"></i>}
+              className="btn-add-home d-flex mt-3"
+              onClick={() => setShowModalCreateDevice(true)}
+            />
+          </div>
+        </div>
 
         <Table striped hover className="mt-4 text-center">
           <thead className="text-center">
